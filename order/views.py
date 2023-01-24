@@ -1,6 +1,6 @@
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -425,6 +425,11 @@ class EstablishmentOrderListAPIView(APIView):
 
 
 #######################################################################################################################
+
+
+class OrderListView(generics.ListAPIView):
+    queryset = models.Order.objects.all()
+    serializer_class = serializers.OrderListSerializer
 
 
 class CreateOrderAPIView(APIView):

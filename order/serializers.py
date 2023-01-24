@@ -126,9 +126,25 @@ class OrderDetailSerializer(serializers.Serializer):
         representation = super(OrderDetailSerializer, self).to_representation(instance)
         if instance.delivery_address.exists():
             representation['delivery_address'] = DelivSerializer(instance.delivery_address.all(), many=True).data
+        if instance.delivery_address.exists():
+            representation['delivery_address'] = DelivSerializer(instance.delivery_address.all(), many=True).data
         if instance.order_items.exists():
             representation['order_items'] = OrderItemSerializer(instance.order_items.all(), many=True).data
         return representation
+
+
+# *********************************************************************************************************************
+
+
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
+# *********************************************************************************************************************
 
 
 class CreateOrderSerializer(serializers.Serializer):
@@ -146,7 +162,7 @@ class CreateOrderSerializer(serializers.Serializer):
         validated_data2['amount'] = validated_data['amount']
         validated_data2['order'] = order
         order_item = models.OrderItem.objects.create(**validated_data2)
-        return {'order': order,'order_item': order_item}
+        return {'order': order, 'order_item': order_item}
 
 
 class CreateDeliveryOrder(serializers.Serializer):
@@ -183,4 +199,38 @@ class CreatePickUpOrder(serializers.Serializer):
         validated_data['order'].order_type = 2
         validated_data['order'].save()
         return models.Delivery.objects.create(**validated_data)
+
+
+class OrderListSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    order_type = serializers.IntegerField(max_value=3, min_value=1)
+    created_at = serializers.DateTimeField(read_only=True)
+    modified_at = serializers.DateTimeField(read_only=True)
+    total = serializers.IntegerField(read_only=True)
+    paid = serializers.BooleanField(read_only=True)
+
+    def to_representation(self, instance):
+        representation = super(OrderListSerializer, self).to_representation(instance)
+        if instance.delivery_address.exists():
+            representation['delivery_address'] = DelivSerializer(instance.delivery_address.all(), many=True).data
+        if instance.order_items.exists():
+            representation['order_items'] = OrderItemSerializer(instance.order_items.all(), many=True).data
+        return representation
+
+
+class DetailOrderSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    order_type = serializers.IntegerField(max_value=3, min_value=1)
+    created_at = serializers.DateTimeField(read_only=True)
+    modified_at = serializers.DateTimeField(read_only=True)
+    total = serializers.IntegerField(read_only=True)
+    paid = serializers.BooleanField(read_only=True)
+
+    def to_representation(self, instance):
+        representation = super(DetailOrderSerializer, self).to_representation(instance)
+        if instance.delivery_address.exists():
+            representation['delivery_address'] = DelivSerializer(instance.delivery_address.all(), many=True).data
+        if instance.order_items.exists():
+            representation['order_items'] = OrderItemSerializer(instance.order_items.all(), many=True).data
+        return representation
 

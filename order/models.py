@@ -100,7 +100,7 @@ class Delivery(models.Model):
     address = models.CharField(max_length=100, verbose_name='Адрес')
     phone = models.CharField(max_length=13, verbose_name='Номер Телефона')
     description = models.TextField(max_length=255, verbose_name='Описание для Доставщика', null=True, blank=True)
-    order = models.ForeignKey(Order, related_name='delivery_address', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='delivery_address', on_delete=models.CASCADE, primary_key=False)
 
     class Meta:
         verbose_name = 'Доставка'
